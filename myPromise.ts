@@ -25,4 +25,28 @@ class MyPromise<T> {
 
     this._state = { status: "rejected", reason };
   };
+
+  then(
+    onFulfilled?: (value: T) => void,
+    onRejected?: (reason: unknown) => void,
+  ) {
+    switch (this._state.status) {
+      case "pending":
+        break;
+      case "fulfilled":
+        if (onFulfilled) {
+          onFulfilled(this._state.value);
+        }
+        break;
+      case "rejected":
+        if (onRejected) {
+          onRejected(this._state.reason);
+        }
+        break;
+      default: {
+        const neverState: never = this._state;
+        return neverState;
+      }
+    }
+  }
 }
